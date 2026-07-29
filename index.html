@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A股研究终端 GitHub Pages 匿名演示版，展示自选股、K线、T点和风控框架。"
+    />
+    <title>A股研究终端 Demo</title>
+    <link rel="icon" href="./favicon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="terminal">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark">A</span>
+          <div>
+            <h1>A股研究终端 Demo</h1>
+            <p>GitHub Pages 公开演示 · 匿名样本 · 交易关闭</p>
+          </div>
+        </div>
+        <div class="status-strip" aria-label="状态">
+          <span class="status on">静态快照</span>
+          <span class="status warn">模拟行情</span>
+          <span class="status off">无交易接口</span>
+        </div>
+        <div class="actions">
+          <button type="button" data-toast="GitHub Pages 版不会请求任何本地服务">同步演示</button>
+          <button type="button" data-toast="已生成演示版财报摘要">财报摘要</button>
+        </div>
+      </header>
+
+      <section class="summary-band">
+        <div>
+          <span class="eyebrow">Public Demo</span>
+          <h2>可公开分享的 A 股研究终端界面</h2>
+          <p>用匿名样本呈现自选扫描、K线、持仓压力、T点区间和风险纪律，适合放在 GitHub Pages 作为项目展示。</p>
+        </div>
+        <div class="summary-metrics">
+          <div><span>样本数</span><strong id="stockCount">8</strong></div>
+          <div><span>核心样本</span><strong>DEMO01</strong></div>
+          <div><span>模块</span><strong>6</strong></div>
+        </div>
+      </section>
+
+      <section class="layout">
+        <aside class="left-col">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>自选股</h3>
+              <span id="watchMeta">8 只</span>
+            </div>
+            <div class="watch-list" id="watchList"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <h3>公开边界</h3>
+              <span>安全</span>
+            </div>
+            <ul class="plain-list">
+              <li>不读取本地 SQLite。</li>
+              <li>不连接同花顺或券商。</li>
+              <li>不展示真实股票和持仓。</li>
+              <li>行情与仓位均为匿名演示数据。</li>
+            </ul>
+          </section>
+        </aside>
+
+        <section class="center-col">
+          <section class="panel quote-panel">
+            <div class="panel-head">
+              <h3 id="quoteTitle">DEMO01 示例能源A</h3>
+              <span id="quoteIndustry">能源</span>
+            </div>
+            <div class="quote-head">
+              <div class="quote-main">
+                <strong id="quotePrice">--</strong>
+                <span id="quotePct">--</span>
+              </div>
+              <div class="metric"><span>动作</span><strong id="quoteAction">--</strong></div>
+              <div class="metric"><span>评分</span><strong id="quoteScore">--</strong></div>
+              <div class="metric"><span>量比</span><strong id="quoteVolumeRatio">--</strong></div>
+              <div class="metric"><span>风险</span><strong id="quoteRisk">--</strong></div>
+            </div>
+            <div class="chart-tools">
+              <div class="periods" id="periodButtons"></div>
+              <span id="ohlc">开 -- 高 -- 低 -- 收 --</span>
+            </div>
+            <canvas id="chart" width="1040" height="410" aria-label="K线图"></canvas>
+          </section>
+
+          <section class="bottom-grid">
+            <section class="panel">
+              <div class="panel-head">
+                <h3>自选扫描</h3>
+                <span>评分</span>
+              </div>
+              <input class="filter" id="filter" placeholder="筛选代码/名称" />
+              <div class="scan-table" id="scanTable"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <h3>信号摘要</h3>
+                <span>demo</span>
+              </div>
+              <div class="signal-list" id="signalList"></div>
+            </section>
+          </section>
+        </section>
+
+        <aside class="right-col">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>持仓演示</h3>
+              <span>本页状态</span>
+            </div>
+            <label class="field">
+              <span>股数</span>
+              <input id="shares" type="number" min="0" step="100" />
+            </label>
+            <label class="field">
+              <span>成本</span>
+              <input id="cost" type="number" min="0" step="0.001" />
+            </label>
+            <button type="button" class="wide" id="savePosition">保存演示持仓</button>
+            <div class="card-rows">
+              <div class="metric"><span>市值</span><strong id="marketValue">--</strong></div>
+              <div class="metric"><span>浮动盈亏</span><strong id="pnl">--</strong></div>
+              <div class="metric"><span>成本/最新</span><strong id="costLatest">--</strong></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <h3>风险面板</h3>
+              <span id="riskMeta">--</span>
+            </div>
+            <div class="card-rows">
+              <div class="metric"><span>20日区间</span><strong id="range20">--</strong></div>
+              <div class="metric"><span>硬风险线</span><strong class="down" id="hardLine">--</strong></div>
+              <div class="metric"><span>持仓压力</span><strong id="positionPressure">--</strong></div>
+            </div>
+            <div class="notes">
+              <p id="riskCopy">--</p>
+              <p>Demo 只展示研究框架，不构成买卖建议。</p>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <h3>T点框架</h3>
+              <span>5分钟</span>
+            </div>
+            <div class="card-rows">
+              <div class="metric"><span>正T观察区</span><strong id="positiveZone">--</strong></div>
+              <div class="metric"><span>反T观察区</span><strong id="reverseZone">--</strong></div>
+              <div class="metric"><span>执行纪律</span><strong id="discipline">--</strong></div>
+            </div>
+          </section>
+        </aside>
+      </section>
+
+      <div class="toast" id="toast" hidden></div>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>
